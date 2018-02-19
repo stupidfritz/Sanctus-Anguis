@@ -1,5 +1,5 @@
 import pygame, random
-from pygame import *
+from pygame.locals import *
 
 
 class Pipe:
@@ -14,5 +14,6 @@ class Pipe:
         
         self.shade = pygame.display.get_surface()
         self.up = pygame.Rect(self.x_pos,self.y_pos,self.width,self.height)
-        self.down = pygame.Rect(self.x_pos,self.y_pos,self.width,self.height)
-        self.shade.fill(Color(color), self.rectangle)
+        self.down = pygame.Rect(self.x_pos,self.height+100,self.width,500)
+        self.shade.fill(Color(color), self.up)
+        self.shade.fill(Color(color), self.down)
