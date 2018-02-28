@@ -11,7 +11,7 @@ class Scene:
 global window, window_width, window_height
 window_width, window_height = 800, 600
 window = pygame.display.set_mode((window_width, window_height))
-pygame.display.set_caption("Snake Thingy")
+pygame.display.set_caption("Sanctus Anguis")
 
 # pipe heights
 level = random.randint(50, 450)
@@ -36,8 +36,65 @@ change2 = 525
 r = 0
 g = 150
 b = 200
+
+# FUNCTIONS FOR BUTTONS
 def startt():
+    Scene.scene = "game"
+
+def gone():
     pygame.quit()
+
+def poos():
+    Scene.scene = "pause"
+
+def bacc():
+    Scene.scene = "menu"
+# INITAILIZE GUI
+
+# The begin Button
+start = Button(text="Begin", rect = (0, 0, 300, 60),
+               bg = (100, 100, 100), fg = (255, 255, 255),
+               bgr = (0, 100, 200), tag = ("menu", None))
+        
+start.Left = 400 - start.Width / 2
+start.Top = (300 - start.Height / 2) + 100
+start.Command = startt
+
+# The Quit Button
+begone = Button(text = "Quit", rect = (0, 0, 300, 60),
+                bg = (100, 100, 100), fg = (255, 255, 255),
+                bgr = (0, 100, 200), tag = ("menu", None))
+
+begone.Left = 400 - begone.Width / 2
+begone.Top = start.Top + 5 + begone.Height
+begone.Command = gone
+
+# The Pause Button
+pause = Button(text = "Pause", rect = (0, 0, 150, 60),
+               bg = (100, 100, 100), fg = (255, 255, 255),
+               bgr = (0, 100, 200), tag = ("game", None))
+
+pause.Left = 800 - pause.Width
+pause.Top = 0
+pause.Command = poos
+
+#The resume Button
+resume = Button(text = "Resume", rect = (0, 0, 150, 60),
+                bg = (100, 100, 100), fg = (255, 255, 255),
+                bgr = (0, 100, 200), tag = ("pause", None))
+
+resume.Left = 400 - (resume.Width / 2)
+resume.Top = 250
+resume.Command = startt
+
+# THE BACK BUTTON
+OSA = Button(text = "Menu", rect = (0, 0, 150, 60),
+             bg = (100, 100, 100), fg = (255, 255, 255),
+             bgr = (0, 100, 200), tag = ("pause", None))
+OSA.Left = 400 - (OSA.Width / 2)
+OSA.Top = resume.Top + 5 + OSA.Height
+OSA.Command = bacc
+
 
 # mainloop
 while running:
@@ -60,34 +117,16 @@ while running:
     clock.tick(30)
 
     if Scene.scene == "menu":
-        window.fill((0, 0, 0))
+        window.fill((0, 0, 70))
         menu.Menu(window=window, size=30, message="Sanctus Anguis",
-                    x=315, y=200, color=(255, 255, 255))
-        start = Button(text="Begin", rect = (0, 0, 300, 60),
-                              bg = (100, 100, 100), fg = (255, 255, 255),
-                              bgr = (0, 100, 200), tag = ("menu", None))
-        def startt():
-            Scene.scene = "game"
-
-        def gone():
-            pygame.quit()
-
-        start.Left = 400 - start.Width / 2
-        start.Top = (300 - start.Height / 2) + 100
-        start.Command = startt
-
-        begone = Button(text = "Quit", rect = (0, 0, 300, 60),
-                        bg = (100, 100, 100), fg = (255, 255, 255),
-                        bgr = (0, 100, 200), tag = ("menu", None))
-
-        begone.Left = 400 - begone.Width / 2
-        begone.Top = (300 - begone.Height / 2) + 210
-        begone.Command = gone
+                  x=295, y=200, color=(255, 255, 255))
+        
         begone.Render(window)
         start.Render(window)
-        pygame.display.update()
+
         
     if Scene.scene == "game":
+
         
         # fill the BG with the color
         window.fill((r, g, b))
@@ -95,6 +134,7 @@ while running:
 
         # position of pipe 
         pos1 -= 4
+
     
         # the 3 pipes
         pipe.Pipe(window=window, width=40, height=level,
@@ -103,7 +143,7 @@ while running:
                   color="green", x_start=pos2, y_start=0)
         pipe.Pipe(window=window, width=40, height=level3,
                   color="green", x_start=pos3, y_start=0)
-
+        
         # pipe spawn loop
         if pos1 <= 1:
             pos1 = 800
@@ -125,8 +165,15 @@ while running:
             change = 800
         if change2 >= 800:
             change2 = 800
+
+        pause.Render(window)
+            
+    if Scene.scene == "pause":
+
+        resume.Render(window)
+        OSA.Render(window)
+
         
-   
     # update the display
     pygame.display.update()
 

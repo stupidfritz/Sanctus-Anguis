@@ -14,7 +14,7 @@ def MouseOver(rect):
 class Button:
 
     All = []
-    Default = pygame.font.SysFont("Verdana", 20)
+    Default = pygame.font.SysFont("Comic Sans MS", 20)
     def __init__(self, text, rect, bg, fg, bgr, font = Default, tag = ("menu", None)):
         self.Text = text
         self.Left = rect[0]
