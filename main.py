@@ -38,7 +38,14 @@ g = 150
 b = 200
 
 # FUNCTIONS FOR BUTTONS
+def ps():
+    pygame.mixer.music.load("smash.mp3")
+    pygame.mixer.music.play(-1, 0.0)
+    time.sleep(0.5)
+    pygame.mixer.music.stop()
+    
 def startt():
+    ps()
     Scene.scene = "game"
 
 def gone():
