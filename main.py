@@ -1,6 +1,7 @@
 import pygame, sys, random, time
 from pygame.locals import *
 import pipe, menu
+import snek
 from Button import *
 pygame.init()
 
@@ -43,10 +44,14 @@ def ps():
     pygame.mixer.music.play(-1, 0.0)
     time.sleep(0.5)
     pygame.mixer.music.stop()
-    
+
+snek2=True
 def startt():
+    global snek_2
+    snek_2=True
     ps()
     Scene.scene = "game"
+    
 
 def gone():
     pygame.quit()
@@ -102,9 +107,9 @@ OSA.Left = 400 - (OSA.Width / 2)
 OSA.Top = resume.Top + 5 + OSA.Height
 OSA.Command = bacc
 
-
 # mainloop
 while running:
+
     for event in pygame.event.get():
         if event.type == pygame.quit:
             running = False
@@ -122,7 +127,12 @@ while running:
             
     # Lock the frame rate to 30 fps
     clock.tick(30)
-
+    if Scene.scene=="lose":
+        window.fill((0, 0, 70))
+        menu.Menu(window=window, size=30, message="You Lose.",
+                  x=330, y=200, color=(255, 255, 255))
+        begone.Render(window)
+        
     if Scene.scene == "menu":
         window.fill((0, 0, 70))
         menu.Menu(window=window, size=30, message="Sanctus Anguis",
@@ -133,22 +143,22 @@ while running:
 
         
     if Scene.scene == "game":
-
+        
         
         # fill the BG with the color
         window.fill((r, g, b))
-
+        
 
         # position of pipe 
         pos1 -= 4
 
     
         # the 3 pipes
-        pipe.Pipe(window=window, width=40, height=level,
+        pipeone=pipe.Pipe(window=window, width=40, height=level,
                   color="green", x_start=pos1, y_start=0)
-        pipe.Pipe(window=window, width=40, height=level2,
+        pipetwo=pipe.Pipe(window=window, width=40, height=level2,
                   color="green", x_start=pos2, y_start=0)
-        pipe.Pipe(window=window, width=40, height=level3,
+        pipethree=pipe.Pipe(window=window, width=40, height=level3,
                   color="green", x_start=pos3, y_start=0)
         
         # pipe spawn loop
@@ -172,13 +182,27 @@ while running:
             change = 800
         if change2 >= 800:
             change2 = 800
-
+        global snek_1
+        
+        if snek_2==True:
+            snek_1=snek.Snek(window,30,30,[random.randint(1,255),random.randint(1,255),random.randint(1,255)],400,300)
+            snek_2=False
+            
+        snek_1.draw()
+        snek_1.handle_keys()
+        if random.randint(0,300)==1:
+            snek_1.y=snek_1.y+30
+        if snek_1.rect.colliderect(pipeone.down) or snek_1.rect.colliderect(pipetwo.down) or snek_1.rect.colliderect(pipethree.down) or snek_1.rect.colliderect(pipeone.up) or snek_1.rect.colliderect(pipetwo.up) or snek_1.rect.colliderect(pipethree.up):
+            time.sleep(.2)
+            Scene.scene="lose"
         pause.Render(window)
             
     if Scene.scene == "pause":
 
         resume.Render(window)
         OSA.Render(window)
+
+
 
         
     # update the display

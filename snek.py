@@ -10,8 +10,28 @@ class Snek:
         self.color = color
         self.x = x
         self.y = y
+        self.surface = pygame.display.get_surface()
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
 
         
-        self.surface = pygame.display.get_surface()
-        self.snek = pygame.Rect(self.x, self.y, self.width, self.height)
-        self.surface.fill(Color(self.color), self.snek)
+    def handle_keys(self):
+        key = pygame.key.get_pressed()
+        dist = 5
+        if key[pygame.K_DOWN]:
+            if self.y<600:
+                self.y += dist
+        if key[pygame.K_UP]:
+            if self.y<6:
+                self.y -= dist
+        if key[pygame.K_RIGHT]:
+            if self.x<800:
+                self.x += dist
+        if key[pygame.K_LEFT]:
+            if self.x>6:
+                self.x -= dist
+    def draw(self):
+        self.surface.fill(self.color, self.rect)
+
+    def is_collided_with(self, sprite):
+        return self.rect.colliderect(sprite.rect)
