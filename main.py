@@ -106,10 +106,34 @@ OSA = Button(text = "Menu", rect = (0, 0, 150, 60),
 OSA.Left = 400 - (OSA.Width / 2)
 OSA.Top = resume.Top + 5 + OSA.Height
 OSA.Command = bacc
-
+global increaseSize
+global snakeX
+global snakeY
+global snakeWidth
+increaseSize=0
+snakeX=200
+snakeY=300
+snakeWidth=30
+def handle_keys():
+    global snakeX,snakeY,increaseSize,snakeWidth
+    key = pygame.key.get_pressed()
+    dist = 5
+    if key[pygame.K_DOWN]:
+        if snakeY<600:
+            snakeY += dist
+    if key[pygame.K_UP]:
+        if snakeY>6:
+            snakeY -= dist
+    if key[pygame.K_RIGHT]:
+        if snakeX<800:
+            snakeX += dist
+    if key[pygame.K_LEFT]:
+        if snakeX>6:
+            snakeX -= dist
 # mainloop
 while running:
 
+    increaseSize+=1
     for event in pygame.event.get():
         if event.type == pygame.quit:
             running = False
@@ -184,14 +208,17 @@ while running:
             change2 = 800
         global snek_1
         
-        if snek_2==True:
-            snek_1=snek.Snek(window,30,30,[random.randint(1,255),random.randint(1,255),random.randint(1,255)],400,300)
-            snek_2=False
+
+        snek_1=snek.Snek(window,snakeWidth,30,[random.randint(1,255),random.randint(1,255),random.randint(1,255)],snakeX,snakeY)
+
             
         snek_1.draw()
-        snek_1.handle_keys()
-        if random.randint(0,300)==1:
-            snek_1.y=snek_1.y+30
+        handle_keys()
+        if increaseSize==300:
+            if snakeX>=150:
+                snakeX -= 30
+                snakeWidth+=30
+                increaseSize=0
         if snek_1.rect.colliderect(pipeone.down) or snek_1.rect.colliderect(pipetwo.down) or snek_1.rect.colliderect(pipethree.down) or snek_1.rect.colliderect(pipeone.up) or snek_1.rect.colliderect(pipetwo.up) or snek_1.rect.colliderect(pipethree.up):
             time.sleep(.2)
             Scene.scene="lose"
